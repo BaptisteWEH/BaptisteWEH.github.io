@@ -1,5 +1,448 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><title>Baptiste</title></head>
-<body><h1>Salut, c'est Baptiste 👋</h1></body>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baptiste Wehry · AI Engineering</title>
+<meta name="description" content="Baptiste Wehry, Data & AI engineering student at ESILV Paris. Projects in deep learning, computer vision, LLM agents and algorithms.">
+<meta name="theme-color" content="#0f1e2e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1e2e; --deep:#16304a; --line:#24425f; --card:#132539;
+  --foam:#e8eef2; --mute:#9bb0c2;
+  --teal:#4fd1c5; --coral:#ff8a7a; --sun:#ffc861; --violet:#a99bff; --sky:#6db8ff;
+  --sans:"Bricolage Grotesque",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--foam);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+nav{position:sticky;top:0;z-index:20;background:rgba(15,30,46,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:24px;height:58px}
+.logo{font-weight:800;font-size:20px;text-decoration:none}
+.logo span{color:var(--teal)}
+nav ul{display:flex;gap:22px;list-style:none;margin-left:auto}
+nav ul a{text-decoration:none;color:var(--mute);font-size:15px}
+nav ul a:hover{color:var(--foam)}
+.open{font-size:13px;padding:5px 12px;border:1px solid var(--teal);border-radius:999px;color:var(--teal);text-decoration:none;white-space:nowrap}
+
+.hero{position:relative;height:min(78vh,640px);min-height:440px;overflow:hidden;border-bottom:1px solid var(--line)}
+#heroNet{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;pointer-events:none}
+.hero h1{font-size:clamp(46px,8vw,104px);font-weight:800;line-height:.95;letter-spacing:-.04em}
+.hero p{margin-top:20px;font-size:20px;color:var(--mute);font-weight:300;max-width:34ch}
+.hero p b{color:var(--foam);font-weight:600}
+.hero .hint{margin-top:28px;font-size:14px;color:var(--teal)}
+.hero .cta{display:flex;gap:12px;margin-top:22px;pointer-events:auto;flex-wrap:wrap}
+.btn{display:inline-block;padding:11px 20px;border-radius:10px;font-weight:600;text-decoration:none;font-size:15px}
+.btn.primary{background:var(--teal);color:var(--ink)}
+.btn.ghost{border:1px solid var(--line);background:rgba(15,30,46,.6)}
+
+section{padding:80px 0}
+h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.025em;line-height:1.05}
+.head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px;margin-bottom:28px}
+.head p{color:var(--mute);margin-top:8px}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.filters button{background:none;border:1px solid var(--line);color:var(--mute);font-size:14px;padding:6px 14px;border-radius:999px;cursor:pointer}
+.filters button[aria-pressed=true]{border-color:var(--foam);color:var(--foam)}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;text-align:left;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-3px);border-color:#3a5f82}
+.card[hidden]{display:none}
+.card.big{grid-column:span 2}
+.cover{position:relative;height:200px;background:#0b1724}
+.cover canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.badge{position:absolute;top:12px;left:12px;font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(11,23,36,.8);border:1px solid var(--line)}
+.badge.wip{color:var(--sun);border-color:rgba(255,200,97,.5)}
+.badge.soon{color:var(--violet);border-color:rgba(169,155,255,.5)}
+.card .body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.card p{color:var(--mute);font-size:15px;flex:1}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-size:12px;padding:2px 9px;border-radius:6px;background:var(--deep)}
+.more{font-size:13px;color:var(--mute)}
+.cardlink{font-size:14px;font-weight:600;color:var(--teal);text-decoration:none;align-self:flex-start}
+.cardlink:hover{text-decoration:underline}
+
+.modal{position:fixed;inset:0;z-index:50;background:rgba(5,12,20,.75);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+.sheet{position:relative;width:100%;max-width:820px;max-height:90vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:18px}
+.sheet .cover{height:300px}
+.sheet .body{padding:26px 30px 30px}
+.sheet h3{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.sheet .when{color:var(--mute);font-size:14px;margin-top:4px}
+.sheet p{margin-top:14px;max-width:66ch}
+.sheet ul{margin:14px 0 0 20px;color:var(--mute)}
+.sheet li{margin:5px 0}
+.sheet .tags{margin-top:16px}
+.sheet .link{display:inline-block;margin-top:18px;color:var(--teal)}
+.close{position:absolute;top:12px;right:12px;z-index:2;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(11,23,36,.85);cursor:pointer;font-size:16px}
+.play{font-size:13px;color:var(--teal);margin-top:6px}
+
+
+.about{display:grid;grid-template-columns:1.1fr 1fr;gap:48px}
+.about p{color:var(--mute);margin-top:14px;max-width:56ch}
+.steps{list-style:none}
+.steps li{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.steps .yr{color:var(--mute);font-size:14px}
+.steps b{font-weight:600}
+.steps small{display:block;color:var(--mute);font-size:14px}
+
+.contact h2{font-size:clamp(34px,5.5vw,64px);max-width:18ch}
+.mail{display:inline-block;margin-top:22px;font-size:clamp(19px,2.6vw,28px);color:var(--teal);text-decoration:none;border-bottom:2px solid var(--teal)}
+.elsewhere{display:flex;gap:22px;margin-top:24px}
+.elsewhere a{color:var(--mute)}
+footer{padding:28px 0;color:var(--mute);font-size:13px;border-top:1px solid var(--line)}
+.bt{border-top:1px solid var(--line)}
+
+@media (max-width:980px){ .grid{grid-template-columns:1fr 1fr} .about{grid-template-columns:1fr} }
+@media (max-width:640px){
+  nav ul{display:none} .open{margin-left:auto}
+  .grid{grid-template-columns:1fr} .card.big{grid-column:auto}
+  section{padding:56px 0} .sheet .cover{height:220px} .sheet .body{padding:20px}
+  .steps li{grid-template-columns:1fr;gap:2px}
+}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .card{transition:none} }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="logo">B<span>W</span></a>
+    <ul>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="open">Open to internships</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="heroNet" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <h1>Baptiste<br>Wehry</h1>
+    <p>Data &amp; AI engineering student at <b>ESILV Paris</b>. I build things with neural networks, and like to check what they actually learn.</p>
+    <div class="hint">Move your cursor over the network to fire neurons</div>
+    <div class="cta">
+      <a class="btn primary" href="#projects">See the projects</a>
+      <a class="btn ghost" href="https://github.com/BaptisteWEH">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="head">
+      <div><h2>Projects</h2><p>Hover the pictures, click a card to open it.</p></div>
+      <div class="filters" role="group" aria-label="Filter projects" id="filters">
+        <button data-f="all" aria-pressed="true">All</button>
+        <button data-f="ml" aria-pressed="false">AI &amp; ML</button>
+        <button data-f="soft" aria-pressed="false">Software</button>
+        <button data-f="data" aria-pressed="false">Data</button>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+
+<section id="about" class="bt">
+  <div class="wrap about">
+    <div>
+      <h2>About</h2>
+      <p>4th year at ESILV, Data &amp; AI major with a research minor. I grew up in Hong Kong for 14 years, so I work in French and English.</p>
+      <p>I like projects that go all the way: from raw data or a blank file to something that runs, then digging into why it works or doesn't.</p>
+    </div>
+    <ul class="steps">
+      <li><span class="yr">2026 to 2027</span><span><b>ESILV research track</b><small>Coral project with the De Vinci Research Center</small></span></li>
+      <li><span class="yr">Feb to Jun 2026</span><span><b>Hanyang University, Seoul</b><small>Exchange semester</small></span></li>
+      <li><span class="yr">Internship</span><span><b>BonMarché</b><small>Web development, built the loyalty points feature</small></span></li>
+      <li><span class="yr">Internship</span><span><b>Zig Zag</b><small>Song matching across Spotify, YouTube, Discogs</small></span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="contact" class="contact bt">
+  <div class="wrap">
+    <h2>Looking for a 4 to 5 month AI internship from April 2027.</h2>
+    <a class="mail" href="mailto:baptiste.wehry@edu.devinci.fr">baptiste.wehry@edu.devinci.fr</a>
+    <div class="elsewhere">
+      <a href="https://github.com/BaptisteWEH">GitHub</a>
+      <a href="https://www.linkedin.com/in/baptiste-wehry-005320292/">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">© 2026 Baptiste Wehry</div></footer>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="close" id="mClose" aria-label="Close">✕</button>
+    <div class="cover"><canvas id="mCanvas"></canvas><span class="badge" id="mBadge" hidden></span></div>
+    <div class="body" id="mBody"></div>
+  </div>
+</div>
+
+<script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const C = { ink:'#0b1724', line:'#24425f', deep:'#16304a', foam:'#e8eef2', mute:'#9bb0c2',
+            teal:'#4fd1c5', coral:'#ff8a7a', sun:'#ffc861', violet:'#a99bff', sky:'#6db8ff' };
+const FONT = '"Bricolage Grotesque", system-ui, sans-serif';
+function rng(seed){ return ()=>{ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+const alpha=(hex,a)=>{const n=parseInt(hex.slice(1),16);return `rgba(${n>>16},${n>>8&255},${n&255},${a})`;};
+function rr(ctx,x,y,w,h,r){ ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x,y,w,h,r); else ctx.rect(x,y,w,h); }
+
+/* Canvas helper: sizing, pointer, visibility, loop */
+function stage(cv, draw){
+  const ctx = cv.getContext('2d');
+  const s = { w:0, h:0, mx:-1, my:-1, hover:false, visible:true, t:0, state:{} };
+  function size(){
+    const r = cv.getBoundingClientRect(), d = devicePixelRatio||1;
+    if(r.width<1||r.height<1){ s.w=s.h=0; return; }
+    cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d);
+    ctx.setTransform(d,0,0,d,0,0); s.w=r.width; s.h=r.height; s.state={};
+    frame(0);
+  }
+  function frame(dt){ if(!s.w||!s.h) return; s.t+=dt; ctx.clearRect(0,0,s.w,s.h); draw(ctx,s); }
+  const host = cv.parentElement;
+  host.addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect(); s.mx=e.clientX-r.left; s.my=e.clientY-r.top; s.hover=true;});
+  host.addEventListener('pointerleave',()=>{s.hover=false; s.mx=s.my=-1;});
+  if('ResizeObserver' in window) new ResizeObserver(size).observe(cv); else addEventListener('resize',size);
+  if('IntersectionObserver' in window) new IntersectionObserver(es=>es.forEach(e=>s.visible=e.isIntersecting)).observe(cv);
+  let last=performance.now(), alive=true;
+  function loop(now){ if(!alive) return; const dt=Math.max(0,Math.min(50,now-last))/1000; last=now; if(s.visible) frame(dt); requestAnimationFrame(loop); }
+  size(); if(!reduce) requestAnimationFrame(loop);
+  return { stop(){ alive=false; } };
+}
+
+/* Illustrations, one per project */
+const ART = {
+  apnea(ctx,s){
+    const {w,h,t}=s, mid=h/2;
+    ctx.strokeStyle=alpha(C.line,.6); ctx.lineWidth=1;
+    for(let x=0;x<w;x+=24){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
+    const env=x=>{ const u=x/w*6+t*0.6, cyc=u%1, ep=Math.floor(u)%5; return ep===3?0.03:(cyc<0.55?Math.sin(Math.PI*cyc/0.55):0); };
+    ctx.beginPath();
+    for(let x=0;x<=w;x+=2){ const e=env(x);
+      const y=mid+(Math.sin(x*0.9+t*20)*0.6+Math.sin(x*0.37)*0.4)*e*h*0.32+Math.sin(x*1.7+t*9)*1.2;
+      x?ctx.lineTo(x,y):ctx.moveTo(x,y); }
+    ctx.strokeStyle=C.teal; ctx.lineWidth=1.6; ctx.stroke();
+    const px=s.hover?s.mx:(t*60)%w, u=px/w*6+t*0.6, pause=Math.floor(u)%5===3;
+    ctx.fillStyle=alpha(C.coral,.12); ctx.fillRect(px-20,0,40,h);
+    ctx.strokeStyle=C.coral; ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,h); ctx.stroke();
+    ctx.fillStyle=pause?C.coral:C.foam; ctx.font=`600 12px ${FONT}`;
+    ctx.fillText(pause?'no breathing':'breath', Math.min(px+8,w-90), 22);
+  },
+
+
+
+
+
+  debate(ctx,s){
+    const {w,h,t}=s, turn=Math.floor(t/1.8)%2, p=(t/1.8)%1;
+    const lines=[['AI should be regulated','Source: EU AI Act'],['Rules slow research down','Source: researcher survey']];
+    const bubble=(side,txt,active)=>{
+      const bw=Math.min(w*.66,300), x=side?w-bw-16:16, y=side?h*.52:h*.1, bh=h*.32;
+      ctx.globalAlpha=active?1:.4; ctx.fillStyle=side?C.coral:C.teal;
+      rr(ctx,x,y,bw,bh,14); ctx.fill(); ctx.beginPath();
+      if(side){ ctx.moveTo(x+bw-30,y+bh); ctx.lineTo(x+bw-10,y+bh+12); ctx.lineTo(x+bw-50,y+bh); }
+      else { ctx.moveTo(x+30,y+bh); ctx.lineTo(x+10,y+bh+12); ctx.lineTo(x+50,y+bh); }
+      ctx.fill();
+      ctx.fillStyle=C.ink; ctx.font=`600 14px ${FONT}`; ctx.fillText(txt[0],x+14,y+bh/2-2);
+      ctx.font=`11px ${FONT}`; ctx.fillText(txt[1],x+14,y+bh/2+15); ctx.globalAlpha=1;
+    };
+    bubble(0,lines[0],turn===0); bubble(1,lines[1],turn===1);
+    if(p>.6){ const x=turn?30:w-70, y=turn?h*.92:h*.5; for(let i=0;i<3;i++){ ctx.fillStyle=alpha(C.foam,(Math.floor(t*6)+i)%3===0?1:.3); ctx.beginPath(); ctx.arc(x+i*12,y,3.5,0,7); ctx.fill(); } }
+  },
+
+  defect(ctx,s){
+    const {w,h,t}=s, belt=h*.68, n=7, gap=w/5, bad=[1,4,6];
+    ctx.fillStyle=C.deep; ctx.fillRect(0,belt,w,14);
+    ctx.strokeStyle=C.line; ctx.lineWidth=2;
+    for(let x=-((t*40)%24);x<w;x+=24){ ctx.beginPath(); ctx.moveTo(x,belt+2); ctx.lineTo(x+10,belt+12); ctx.stroke(); }
+    const camX=w*.62;
+    ctx.fillStyle=C.mute; rr(ctx,camX-18,10,36,22,5); ctx.fill(); ctx.fillStyle=C.ink; ctx.beginPath(); ctx.arc(camX,32,6,0,7); ctx.fill();
+    ctx.fillStyle=alpha(C.teal,.08); ctx.beginPath(); ctx.moveTo(camX-6,34); ctx.lineTo(camX+6,34); ctx.lineTo(camX+40,belt); ctx.lineTo(camX-40,belt); ctx.fill();
+    let focus=-1;
+    for(let i=0;i<n;i++){
+      const x=((i*gap+t*40)%(n*gap))-gap/2, y=belt-34, isBad=bad.includes(i);
+      const near=s.hover?Math.abs(x+20-s.mx)<26&&s.my>y-10:Math.abs(x+20-camX)<22;
+      if(near) focus=i;
+      ctx.fillStyle=C.sky; rr(ctx,x,y,40,34,6); ctx.fill();
+      ctx.fillStyle=C.ink; ctx.beginPath(); ctx.arc(x+20,y+17,7,0,7); ctx.fill();
+      if(isBad){ ctx.strokeStyle=C.ink; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x+6,y+5); ctx.lineTo(x+13,y+14); ctx.lineTo(x+9,y+22); ctx.stroke(); }
+      if(near){ const c=isBad?C.coral:C.teal; ctx.strokeStyle=c; ctx.lineWidth=2; ctx.setLineDash([5,3]); ctx.strokeRect(x-6,y-6,52,46); ctx.setLineDash([]);
+        ctx.font=`600 12px ${FONT}`; const lab=isBad?'defect':'OK'; ctx.fillStyle=c; ctx.fillRect(x-6,y-26,ctx.measureText(lab).width+14,20);
+        ctx.fillStyle=C.ink; ctx.fillText(lab,x+1,y-12); }
+    }
+  },
+
+  ds(ctx,s){
+    const {w,h,t}=s, cols=4, rows=6, cw=(w-24)/cols, top=34, rh=(h*.55-top)/rows;
+    const heads=['age','price','score','city'];
+    const hot=s.hover?Math.max(0,Math.min(cols-1,Math.floor((s.mx-12)/cw))):Math.floor(t/1.8)%cols;
+    ctx.font=`600 12px ${FONT}`;
+    for(let c=0;c<cols;c++){
+      const x=12+c*cw, on=c===hot;
+      ctx.fillStyle=on?alpha(C.violet,.18):'transparent'; ctx.fillRect(x,8,cw-4,top-8+rows*rh);
+      ctx.fillStyle=on?C.violet:C.mute; ctx.fillText(heads[c],x+8,26);
+      for(let r=0;r<rows;r++){ const y=top+r*rh, missing=(r*3+c*5)%11===4;
+        ctx.fillStyle=missing?alpha(C.coral,.5):C.deep; rr(ctx,x+6,y+3,cw-16,rh-6,3); ctx.fill();
+        if(!missing){ ctx.fillStyle=alpha(C.foam,.25); ctx.fillRect(x+12,y+rh/2-1,(cw-30)*(((r*7+c*3)%10)/12+.15),2); } }
+    }
+    const base=h-14, bars=10, bw=(w-24)/bars, r=rng(hot*91+3);
+    const shape=[x=>Math.exp(-(((x-.45)/.2)**2)), x=>Math.exp(-x*3), x=>Math.exp(-(((x-.7)/.18)**2)), x=>(Math.floor(x*10)%3===0?.9:.3)][hot];
+    ctx.strokeStyle=C.line; ctx.beginPath(); ctx.moveTo(12,base); ctx.lineTo(w-12,base); ctx.stroke();
+    for(let i=0;i<bars;i++){ const v=Math.max(.05,shape((i+.5)/bars)*(.8+r()*.3)), bh=(h*.32)*v;
+      ctx.fillStyle=C.violet; rr(ctx,12+i*bw+2,base-bh,bw-4,bh,[4,4,0,0]); ctx.fill(); }
+  },
+
+  music(ctx,s){
+    const {w,h,t}=s, cols=[{n:'Spotify',c:'#1ed760'},{n:'YouTube',c:'#ff4e45'},{n:'Discogs',c:'#e8eef2'}];
+    const n=5, cw=w*.22, gap=(w-cw*3)/4, rowH=(h-44)/n, bh=rowH-8;
+    const pos=(ci,ri)=>[gap+ci*(cw+gap),34+ri*rowH];
+    const perm=[[0,2,4,1,3],[3,0,1,4,2]];
+    ctx.font=`600 12px ${FONT}`;
+    cols.forEach((c,ci)=>{ ctx.fillStyle=c.c; ctx.fillText(c.n,gap+ci*(cw+gap),20);
+      for(let r=0;r<n;r++){ const [x,y]=pos(ci,r); ctx.fillStyle=C.deep; rr(ctx,x,y,cw,bh,6); ctx.fill();
+        ctx.fillStyle=alpha(c.c,.7); ctx.fillRect(x+8,y+bh*.3,cw*.5,4); ctx.fillStyle=C.line; ctx.fillRect(x+8,y+bh*.6,cw*.3,3); } });
+    const active=s.hover?Math.max(0,Math.min(n-1,Math.floor((s.my-34)/rowH))):Math.floor(t/1.2)%n;
+    for(let r=0;r<n;r++){
+      const r1=perm[0][r], r2=perm[1][r1], on=r===active;
+      const [x0,y0]=pos(0,r),[x1,y1]=pos(1,r1),[x2,y2]=pos(2,r2);
+      ctx.strokeStyle=on?C.teal:alpha(C.mute,.15); ctx.lineWidth=on?2.5:1; ctx.beginPath();
+      ctx.moveTo(x0+cw,y0+bh/2); ctx.bezierCurveTo(x0+cw+gap/2,y0+bh/2,x1-gap/2,y1+bh/2,x1,y1+bh/2);
+      ctx.moveTo(x1+cw,y1+bh/2); ctx.bezierCurveTo(x1+cw+gap/2,y1+bh/2,x2-gap/2,y2+bh/2,x2,y2+bh/2); ctx.stroke();
+      if(on) [[x0,y0],[x1,y1],[x2,y2]].forEach(([x,y])=>{ rr(ctx,x,y,cw,bh,6); ctx.stroke(); });
+    }
+  },
+
+
+};
+
+/* Neural network drawing, shared by the hero and the nn card */
+function net(ctx,s,layers,margin){
+  const {w,h}=s;
+  if(!s.state.nodes){
+    const r=rng(layers.reduce((a,b)=>a*10+b,0));
+    const nodes=[], links=[];
+    layers.forEach((n,li)=>{ for(let i=0;i<n;i++) nodes.push({l:li, x:w*((1-margin)/2+margin*li/(layers.length-1))+(r()-.5)*10, y:h*((i+1)/(n+1))+(r()-.5)*10, a:0}); });
+    const byL=l=>nodes.map((n,i)=>n.l===l?i:-1).filter(i=>i>=0);
+    for(let l=0;l<layers.length-1;l++) byL(l).forEach(i=>byL(l+1).forEach(j=>links.push({i,j,wt:r()*2-1})));
+    s.state.nodes=nodes; s.state.links=links; s.state.pulses=[]; s.state.clock=0;
+  }
+  const {nodes,links,pulses}=s.state;
+  const fire=i=>{ nodes[i].a=1; links.forEach(k=>{ if(k.i===i && Math.random()<.55+.3*k.wt) pulses.push({k,p:0}); }); };
+  s.state.clock+=1/60;
+  if(s.state.clock>.6){ s.state.clock=0; const ins=byLayer0(); fire(ins[Math.floor(Math.random()*ins.length)]); }
+  function byLayer0(){ return nodes.map((n,i)=>n.l===0?i:-1).filter(i=>i>=0); }
+  if(s.hover) nodes.forEach((n,i)=>{ if(Math.hypot(n.x-s.mx,n.y-s.my)<40 && n.a<.3) fire(i); });
+  links.forEach(k=>{ const a=nodes[k.i],b=nodes[k.j]; ctx.strokeStyle=alpha(k.wt>0?C.teal:C.coral,.1+.18*Math.abs(k.wt)); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); });
+  for(let q=pulses.length-1;q>=0;q--){ const P=pulses[q]; P.p+=.03; const a=nodes[P.k.i],b=nodes[P.k.j];
+    if(P.p>=1){ pulses.splice(q,1); if(nodes[P.k.j].a<.5) fire(P.k.j); continue; }
+    ctx.fillStyle=P.k.wt>0?C.teal:C.coral; ctx.beginPath(); ctx.arc(a.x+(b.x-a.x)*P.p,a.y+(b.y-a.y)*P.p,2.5,0,7); ctx.fill(); }
+  if(pulses.length>300) pulses.splice(0,pulses.length-300);
+  nodes.forEach(n=>{ n.a*=.95; ctx.fillStyle=C.ink; ctx.strokeStyle=alpha(C.foam,.35+.65*n.a); ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(n.x,n.y,6+4*n.a,0,7); ctx.fill(); ctx.stroke();
+    if(n.a>.05){ ctx.fillStyle=alpha(C.teal,n.a); ctx.beginPath(); ctx.arc(n.x,n.y,4+3*n.a,0,7); ctx.fill(); } });
+}
+
+/* Projects */
+const P = [
+  { id:"apnea", title:"Sleep apnea from phone audio", cat:["ml"], big:true, when:"Personal research, summer 2026",
+    short:"Detecting breathing pauses in sleep recordings made by a phone on the nightstand.",
+    long:"Deep learning on 48 patients' night recordings. I compared several audio models, then showed the main limit came from the pre-trained audio encoder, which recognised the patient better than the apnea.",
+    tags:["TensorFlow","YAMNet","BiLSTM","Audio"], url:"https://github.com/BaptisteWEH/Sleep-Apnea-Detection-from-Smartphone-Audio", hint:"Move the playhead along the night" },
+  { id:"debate", title:"Debate agent", cat:["ml","soft"], when:"Team project",
+    short:"A chatbot that picks a side and defends it, backed by real sources it can search.",
+    long:"A conversational agent that holds a position over several turns. Each answer is grounded in documents retrieved from an indexed base (RAG).",
+    pts:["RAG with vector search, orchestrated by LangChain","Serverless on AWS: S3 for the site, Lambda for the model calls","MongoDB to keep conversations"],
+    tags:["TypeScript","LangChain","RAG","AWS Lambda"], url:"https://github.com/BaptisteWEH/Debate-Assistant", hint:"Watch the two sides argue" },
+  { id:"defect", title:"Industrial defect detection", cat:["ml"], when:"Machine learning labs",
+    short:"Supervised learning on factory data: telling defective parts from good ones.",
+    long:"Machine learning lab notebooks built around an industrial defect detection dataset: preparing the data, training classifiers and evaluating them.",
+    tags:["Python","scikit-learn","Jupyter"], url:"https://github.com/BaptisteWEH/MachineLearningPractice", hint:"Hover a part to inspect it" },
+  { id:"ds", title:"Data science with pandas & NumPy", cat:["data"], when:"Course labs",
+    short:"Hands-on notebooks for cleaning, exploring and analysing tabular data.",
+    long:"Lab notebooks on the core Python data stack: loading and cleaning datasets with pandas, computing with NumPy, and exploring the results.",
+    tags:["Python","pandas","NumPy","Jupyter"], url:"https://github.com/BaptisteWEH/DataScience-Panda-Numpy", hint:"Hover a column to see its distribution" },
+  { id:"music", title:"Music metadata matching", cat:["data","soft"], when:"Internship, Zig Zag",
+    short:"Finding the same song on Spotify, YouTube and Discogs when they share no common ID.",
+    long:"Built during my internship at Zig Zag. Tens of thousands of songs compared across three catalogues. The hard part is messy data: artist aliases, different editions, wrong release years.",
+    pts:["API ingestion from the three platforms","Similarity score per field, with a tuned threshold","Containerised with Docker"],
+    tags:["Python","APIs","Docker"], url:"https://www.zig-zag.fm/early-access/3348~1024/track~5434312", linkLabel:"Visit Zig Zag", hint:"Hover a row to follow a match" }
+];
+
+const grid=document.getElementById('grid');
+const badgeHTML=p=>p.state==='wip'?'<span class="badge wip">In progress</span>':p.state==='soon'?'<span class="badge soon">Coming soon</span>':'';
+grid.innerHTML=P.map(p=>`
+  <article class="card${p.big?' big':''}" data-id="${p.id}" data-cat="${p.cat.join(' ')}" tabindex="0" role="button" aria-label="Open ${p.title}">
+    <div class="cover"><canvas></canvas>${badgeHTML(p)}</div>
+    <div class="body">
+      <h3>${p.title}</h3>
+      <p>${p.short}</p>
+      <div class="tags">${p.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+      <span class="more">${p.hint}</span>
+      <a class="cardlink" href="${p.url}" target="_blank" rel="noopener">${p.linkLabel||'View on GitHub'} ↗</a>
+    </div>
+  </article>`).join('');
+grid.querySelectorAll('.cardlink').forEach(a=>a.onclick=e=>e.stopPropagation());
+grid.querySelectorAll('.card').forEach(c=>{
+  stage(c.querySelector('canvas'), ART[c.dataset.id]);
+  c.onclick=()=>openP(c.dataset.id);
+  c.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openP(c.dataset.id); } };
+});
+document.querySelectorAll('#filters button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#filters button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  grid.querySelectorAll('.card').forEach(c=>c.hidden=!(b.dataset.f==='all'||c.dataset.cat.split(' ').includes(b.dataset.f)));
+});
+
+/* Modal */
+const modal=document.getElementById('modal'), mBody=document.getElementById('mBody'), mBadge=document.getElementById('mBadge');
+let mStage=null, lastFocus=null;
+function openP(id){
+  const p=P.find(x=>x.id===id); lastFocus=document.activeElement;
+  const old=document.getElementById('mCanvas'), cv=document.createElement('canvas'); cv.id='mCanvas'; old.replaceWith(cv);
+  if(mStage) mStage.stop();
+  mBadge.hidden=!p.state; mBadge.className='badge '+(p.state||''); mBadge.textContent=p.state==='wip'?'In progress':'Coming soon';
+  const hint=p.hint;
+  mBody.innerHTML=`<h3 id="mTitle">${p.title}</h3><div class="when">${p.when}</div>
+    ${hint?`<div class="play">${hint}</div>`:''}
+    <p>${p.long}</p>
+    ${p.pts?`<ul>${p.pts.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
+    <div class="tags">${p.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+    <a class="link" href="${p.url}" target="_blank" rel="noopener">${p.linkLabel||'View on GitHub'} ↗</a>`;
+  modal.classList.add('on'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+  modal.querySelector('.sheet').scrollTop=0;
+  mStage=stage(cv, ART[id]);
+  document.getElementById('mClose').focus();
+}
+function closeP(){ modal.classList.remove('on'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(mStage){mStage.stop();mStage=null;} if(lastFocus) lastFocus.focus(); }
+document.getElementById('mClose').onclick=closeP;
+modal.onclick=e=>{ if(e.target===modal) closeP(); };
+
+
+/* Hero network: sits on the right so the name stays readable */
+stage(document.getElementById('heroNet'),(ctx,s)=>{
+  const narrow=s.w<700, off=narrow?0:s.w*.4;
+  if(!s.state.sub) s.state.sub={state:{}};
+  const sub=s.state.sub; sub.w=s.w-off; sub.h=s.h; sub.hover=s.hover; sub.mx=s.mx-off; sub.my=s.my; sub.t=s.t;
+  ctx.save(); ctx.translate(off,0); if(narrow) ctx.globalAlpha=.3;
+  net(ctx,sub,narrow?[4,6,6,4]:[5,8,8,6,3],.86);
+  ctx.restore();
+});
+
+addEventListener('keydown',e=>{ if(e.key==='Escape' && modal.classList.contains('on')) closeP(); });
+</script>
+</body>
 </html>
